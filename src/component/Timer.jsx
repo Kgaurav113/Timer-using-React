@@ -4,9 +4,11 @@ const Timer = () => {
   const [second, setsecond] = useState(0);
   const [mintues, setmintues] = useState(0);
   const [hours, sethours] = useState(0);
+  const[pause,setpause]=useState(false);
 
   useEffect(() => {
     let timer = setInterval(() => {
+      if(pause){
       setsecond(second + 1);
       if (second === 59) {
         setmintues(mintues + 1);
@@ -16,11 +18,12 @@ const Timer = () => {
         sethours(hours + 1);
         setmintues(0);
       }
+    }
     }, 1000);
 
     return () => clearInterval(timer);
   });
-  var timer;
+ 
   const restart = () => {
     setsecond(0);
     setmintues(0);
@@ -29,7 +32,7 @@ const Timer = () => {
 
   // for stop
   const stop = () => {
-    clearInterval(timer);
+    setpause(!pause);
   };
 
   return (
@@ -39,7 +42,7 @@ const Timer = () => {
           <div className="timer-container">
             <h2>timer</h2>
             <h2>
-              {hours < 10 ? "0" + hours : hours}:
+              {hours < 10?"0"+hours:hours}:
               {mintues < 10 ? "0" + mintues : mintues}:
               {second < 10 ? "0" + second : second}
             </h2>
@@ -55,6 +58,7 @@ const Timer = () => {
           >
             restart
           </button>
+          
           <button
             onClick={stop}
             style={{
@@ -65,8 +69,8 @@ const Timer = () => {
               marginLeft: "20px",
             }}
           >
-            stop
-          </button>
+           {(!pause)?"start":"pause"}
+          </button>:
         </div>
       </div>
     </>
